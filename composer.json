@@ -1,36 +1,42 @@
 {
-    "name": "vendor_slug/package_slug",
-    "description": ":package_description",
+    "name": "nikitanp/alfacrm-api-php",
+    "description": "API for AlfaCRM",
     "keywords": [
-        ":vendor_name",
-        "package_slug"
+        "nikitanp",
+        "alfacrm-api-php"
     ],
-    "homepage": "https://github.com/vendor_slug/package_slug",
+    "homepage": "https://github.com/nikitanp/alfacrm_api_php",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Nikita Mikhno",
+            "email": "nikita.mikhnonp@gmail.com",
             "role": "Developer"
         }
     ],
+    "version": "1.0.0",
     "require": {
-        "php": "^8.0"
+        "php": "^7.3|^8.0",
+        "ext-json": "*",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.17",
+        "guzzlehttp/guzzle": "^7.3",
+        "http-interop/http-factory-guzzle": "^1.0",
+        "mockery/mockery": "^1.4",
         "phpunit/phpunit": "^9.5",
-        "spatie/ray": "^1.10",
         "vimeo/psalm": "^4.3"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src"
+            "Nikitanp\\AlfacrmApiPhp\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Nikitanp\\AlfacrmApiPhp\\Tests\\": "tests"
         }
     },
     "scripts": {

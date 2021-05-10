@@ -1,67 +1,69 @@
-# :package_description
+# API для AlfaCRM
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/vendor_slug/package_slug.svg?style=flat-square)](https://packagist.org/packages/vendor_slug/package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/vendor_slug/package_slug/run-tests?label=tests)](https://github.com/vendor_slug/package_slug/actions?query=workflow%3ATests+branch%3Amaster)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/vendor_slug/package_slug/Check%20&%20fix%20styling?label=code%20style)](https://github.com/vendor_slug/package_slug/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
-[![Total Downloads](https://img.shields.io/packagist/dt/vendor_slug/package_slug.svg?style=flat-square)](https://packagist.org/packages/vendor_slug/package_slug)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/nikitanp/alfacrm_api_php.svg?style=flat-square)](https://packagist.org/packages/nikitanp/alfacrm_api_php)
+[![Total Downloads](https://img.shields.io/packagist/dt/nikitanp/alfacrm_api_php.svg?style=flat-square)](https://packagist.org/packages/nikitanp/alfacrm_api_php)
 
 ---
-This package can be used as to scaffold a Laravel package. Follow these steps to get started:
+## Описание
 
-1. Press the "Use template" button at the top of this repo to create a new repo with the contents of this skeleton
-2. Run "./configure.sh" to run a script that will replace all placeholders throughout all the files
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
+Данный пакет является простой оберткой [REST API AlfaCRM](https://alfacrm.pro/rest-api). Реализованы базовые сущности системы.
+Также реализованы некоторые вспомогательные методы.
 
-This is where your description should go. Try and limit it to a paragraph or two. Consider adding a small example.
+Клиент использует [PSR-18](https://www.php-fig.org/psr/psr-18/) и [PSR-17](https://www.php-fig.org/psr/psr-17/) для своей работы.
+Например, можно использовать в качестве http клиента библиотеку [guzzlehttp/guzzle](https://github.com/guzzle/guzzle) 
+и PSR-17 имплементацию для нее [http-interop/http-factory-guzzle](https://github.com/http-interop/http-factory-guzzle).
 
-## Support us
+## Установка
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
-## Installation
-
-You can install the package via composer:
+Вы можете установить пакет через composer:
 
 ```bash
-composer require vendor_slug/package_slug
+composer require nikitanp/alfacrm-api-php
 ```
 
-## Usage
+## Базовые методы для работы
+
+Базовые методы находятся в классе `\Nikitanp\AlfacrmApiPhp\Entities\AbstractEntity`:
+
+- ```get(int $page = 0, array $filterData = []): array``` Возвращает одну страницу данных с возможностью фильтрации
+- ```getAll(array $filterData = []): \Generator``` Возвращает все сущности с возможностью фильтрации.
+- ```getFirst(array $filterData = []): array``` Возвращает первый элемент.
+- ```count(array $filterData = []): int``` Возвращает количество результатов с указанным фильтром.
+- ```fields(array $filterData = []): array``` Возвращает возможные поля. Для получения результата берется первый ответ из системы.
+- ```create(array $entityData): array``` Создает сущность
+- ```update(int $entityId, array $updateData): array``` Обновляет сущность
+- ```delete(int $entityId): array``` Удаляет сущность
+
+## Пример использования
 
 ```php
-$skeleton = new VendorName\Skeleton();
-echo $skeleton->echoPhrase('Hello, VendorName!');
+$apiClient = new \Nikitanp\AlfacrmApiPhp\Client(
+     $psr18Client,
+     $psr17RequestFactory,
+     $psr17StreamFactory
+);
+$apiClient->setDomain('domain.alfacrm.pro');
+$apiClient->setEmail('admin@domain.exaple');
+$apiClient->setApiKey('application-api-key');
+$apiClient->authorize();
+
+$customer = new \Nikitanp\AlfacrmApiPhp\Entities\Customer($apiClient);
+$customer->fields();
+$customer->count();
+$customer->get();
+$customer->getAll();
+$customer->getAllArchived();
+$customer->create(['customer_data']);
+$customer->delete(1);
+$customer->update(1, ['customer_data']);
 ```
 
-## Testing
+## Тестирование
 
 ```bash
 composer test
 ```
 
-## Changelog
+## Автор
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [:author_name](https://github.com/:author_username)
-- [All Contributors](../../contributors)
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+- [Никита Михно](https://github.com/nikitanp)

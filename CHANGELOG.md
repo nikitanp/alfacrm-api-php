@@ -1,7 +1,5 @@
 # Changelog
 
-All notable changes to `:package_name` will be documented in this file.
-
-## 1.0.0 - 202X-XX-XX
+## 1.0.0 - 2021-05-10
 
 - initial release
