@@ -1,7 +1,7 @@
 # API для AlfaCRM
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/nikitanp/alfacrm_api_php.svg?style=flat-square)](https://packagist.org/packages/nikitanp/alfacrm_api_php)
-[![Total Downloads](https://img.shields.io/packagist/dt/nikitanp/alfacrm_api_php.svg?style=flat-square)](https://packagist.org/packages/nikitanp/alfacrm_api_php)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/nikitanp/alfacrm_api_php.svg?style=flat-square)](https://packagist.org/packages/nikitanp/alfacrm-api-php)
+[![Total Downloads](https://img.shields.io/packagist/dt/nikitanp/alfacrm_api_php.svg?style=flat-square)](https://packagist.org/packages/nikitanp/alfacrm-api-php)
 
 ---
 ## Описание
