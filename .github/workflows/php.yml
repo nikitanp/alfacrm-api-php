@@ -28,7 +28,7 @@ jobs:
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
-      
+
     - name: Run CSFixer
       run: composer format .
 
@@ -36,4 +36,4 @@ jobs:
       run: composer psalm
 
     - name: Run test suite
-      run: composer run-script test
+      run: composer test

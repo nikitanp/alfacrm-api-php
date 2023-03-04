@@ -4,7 +4,7 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class CustomerTariff extends AbstractEntity
 {
-    protected $modelName = 'customer-tariff';
+    protected string $modelName = 'customer-tariff';
 
     /**
      * @inheritDoc

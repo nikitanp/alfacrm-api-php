@@ -4,5 +4,5 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class Room extends AbstractEntity
 {
-    protected $modelName = 'room';
+    protected string $modelName = 'room';
 }

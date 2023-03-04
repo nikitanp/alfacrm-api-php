@@ -4,5 +4,5 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class Discount extends AbstractEntity
 {
-    protected $modelName = 'discount';
+    protected string $modelName = 'discount';
 }

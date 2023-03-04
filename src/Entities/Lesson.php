@@ -4,5 +4,5 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class Lesson extends AbstractEntity
 {
-    protected $modelName = 'lesson';
+    protected string $modelName = 'lesson';
 }

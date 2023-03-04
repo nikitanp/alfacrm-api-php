@@ -1,21 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nikitanp\AlfacrmApiPhp\Tests;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Nikitanp\AlfacrmApiPhp\Contracts\Client;
 use Nikitanp\AlfacrmApiPhp\Entities\Branch;
 use Nikitanp\AlfacrmApiPhp\Exceptions\NoSuchResultsException;
+use PHPUnit\Framework\TestCase;
 
-class EntityTest extends MockeryTestCase
+class EntityTest extends TestCase
 {
-    /** @test */
-    public function get_method_works_without_params()
+    public function test_get_method_works_without_params(): void
     {
-        $clientMock = \Mockery::mock(Client::class);
-        $clientMock->shouldReceive('sendRequest')->andReturn([
-            'total' => 4,
-            'count' => 4,
+        $data = [
+            'total' => 2,
+            'count' => 2,
             'page' => 0,
             'items' => [
                 [
@@ -41,70 +41,35 @@ class EntityTest extends MockeryTestCase
                     'is_active' => 0,
                     'weight' => 2,
                 ],
-                [
-                    'id' => 4,
-                    'name' => 'test3',
-                    'subject_ids' =>
-                        [
-                            0 => 1,
-                            1 => 2,
-                            2 => 5,
-                        ],
-                    'is_active' => 0,
-                    'weight' => 3,
-                ],
-                [
-                    'id' => 5,
-                    'name' => 'test4',
-                    'subject_ids' =>
-                        [
-                            0 => 1,
-                            1 => 2,
-                            2 => 5,
-                        ],
-                    'is_active' => 0,
-                    'weight' => 4,
-                ],
             ],
-        ]);
+        ];
 
-        $branch = new Branch($clientMock);
-        $branch->get();
+        $branch = new Branch($this->createClient($data));
+
+        $result = $branch->get();
+
+        $this->assertSame($result, $data);
     }
 
-    /** @test */
-    public function get_method_add_page_number_to_request()
+    public function test_get_method_add_page_number_to_request(): void
     {
-        $clientMock = \Mockery::mock(Client::class);
-        $clientMock->shouldReceive('sendRequest')
-            ->withArgs([
-                '/v2api/1/branch/index',
-                ['page' => 2]
-            ]);
+        $branch = new Branch($this->createClient([], ['/v2api/1/branch/index', ['page' => 2]]));
 
-        $branch = new Branch($clientMock);
         $branch->get(2);
+
+        $this->assertTrue(true);
     }
 
-    /** @test */
-    public function get_method_add_filter_data_to_request()
+    public function test_get_method_adds_filter_data_to_request(): void
     {
-        $clientMock = \Mockery::mock(Client::class);
-        $clientMock->shouldReceive('sendRequest')
-            ->withArgs([
-                '/v2api/1/branch/index',
-                [
-                    'page' => 0,
-                    'filter' => 'test'
-                ]
-            ]);
+        $branch = new Branch($this->createClient([], ['/v2api/1/branch/index', ['page' => 0, 'filter' => 'test']]));
 
-        $branch = new Branch($clientMock);
         $branch->get(0, ['filter' => 'test']);
+
+        $this->assertTrue(true);
     }
 
-    /** @test */
-    public function get_method_returns_empty_array_when_no_items_for_result()
+    public function test_get_method_returns_empty_array_when_no_items_for_result(): void
     {
         $data = [
             'total' => 0,
@@ -112,48 +77,46 @@ class EntityTest extends MockeryTestCase
             'page' => 0,
             'items' => [],
         ];
+        $branch = new Branch($this->createClient($data));
 
-        $clientMock = \Mockery::mock(Client::class);
-        $clientMock->shouldReceive('sendRequest')->andReturn($data);
-
-        $branch = new Branch($clientMock);
         $result = $branch->get();
+
         $this->assertEquals($data, $result);
     }
 
-    /** @test */
-    public function get_first_method_throws_exception_when_no_results()
+    public function test_get_first_method_throws_exception_when_no_results(): void
     {
+        $branch = new Branch($this->createClient());
+
         $this->expectException(NoSuchResultsException::class);
-        $data = [
-            'total' => 0,
-            'count' => 0,
-            'page' => 0,
-            'items' => [],
-        ];
-
-        $clientMock = \Mockery::mock(Client::class);
-        $clientMock->shouldReceive('sendRequest')->andReturn($data);
-
-        $branch = new Branch($clientMock);
         $branch->getFirst();
     }
 
-    /** @test */
-    public function fields_method_throws_exception_when_no_results()
+    public function test_fields_method_throws_exception_when_no_results(): void
     {
+        $branch = new Branch($this->createClient());
+
         $this->expectException(NoSuchResultsException::class);
-        $data = [
+        $branch->fields();
+    }
+
+    private function createClient(
+        array $returnData = [
             'total' => 0,
             'count' => 0,
             'page' => 0,
             'items' => [],
-        ];
+        ],
+        array $expectedArgs = []
+    ): Client {
+        $client = $this->createMock(Client::class);
 
-        $clientMock = \Mockery::mock(Client::class);
-        $clientMock->shouldReceive('sendRequest')->andReturn($data);
+        $sendRequestMocker = $client->method('sendRequest');
+        if ($expectedArgs) {
+            $sendRequestMocker->with(...$expectedArgs);
+        }
+        $sendRequestMocker->willReturn($returnData);
 
-        $branch = new Branch($clientMock);
-        $branch->fields();
+        return $client;
     }
 }

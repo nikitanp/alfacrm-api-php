@@ -8,20 +8,11 @@ use Nikitanp\AlfacrmApiPhp\Exceptions\TooManyRequestsException;
 
 abstract class AbstractEntity
 {
-    /**
-     * @var Client
-     */
-    protected $client;
+    protected Client $client;
 
-    /**
-     * @var string
-     * @psalm-suppress PropertyNotSetInConstructor
-     */
-    protected $modelName;
-    /**
-     * @var int
-     */
-    protected $branchId;
+    protected int $branchId;
+
+    protected string $modelName = 'unspecified';
 
     public function __construct(
         Client $client,

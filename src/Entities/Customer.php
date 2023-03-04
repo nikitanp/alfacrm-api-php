@@ -4,7 +4,7 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class Customer extends AbstractEntity
 {
-    protected $modelName = 'customer';
+    protected string $modelName = 'customer';
 
     public const REMOVED_OPTION = [
         'archived_and_active' => 1,

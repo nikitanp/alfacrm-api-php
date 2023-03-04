@@ -4,7 +4,7 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class Group extends AbstractEntity
 {
-    protected $modelName = 'group';
+    protected string $modelName = 'group';
 
     public const REMOVED_OPTION = [
         'archived_and_active' => 1,
