@@ -1,21 +1,17 @@
 # API для AlfaCRM
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/nikitanp/alfacrm_api_php.svg?style=flat-square)](https://packagist.org/packages/nikitanp/alfacrm-api-php)
-[![Total Downloads](https://img.shields.io/packagist/dt/nikitanp/alfacrm_api_php.svg?style=flat-square)](https://packagist.org/packages/nikitanp/alfacrm-api-php)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/nikitanp/alfacrm-api-php.svg?style=flat-square)](https://packagist.org/packages/nikitanp/alfacrm-api-php)
 
 ---
 ## Описание
 
-Данный пакет является простой оберткой [REST API AlfaCRM](https://alfacrm.pro/rest-api). Реализованы базовые сущности системы.
-Также реализованы некоторые вспомогательные методы.
+Данный пакет является PHP клиентом для [REST API AlfaCRM](https://alfacrm.pro/rest-api)
 
 Клиент использует [PSR-18](https://www.php-fig.org/psr/psr-18/) и [PSR-17](https://www.php-fig.org/psr/psr-17/) для своей работы.
 Например, можно использовать в качестве http клиента библиотеку [guzzlehttp/guzzle](https://github.com/guzzle/guzzle) 
 и PSR-17 имплементацию для нее [http-interop/http-factory-guzzle](https://github.com/http-interop/http-factory-guzzle).
 
 ## Установка
-
-Вы можете установить пакет через composer:
 
 ```bash
 composer require nikitanp/alfacrm-api-php
@@ -57,13 +53,3 @@ $customer->create(['customer_data']);
 $customer->delete(1);
 $customer->update(1, ['customer_data']);
 ```
-
-## Тестирование
-
-```bash
-composer test
-```
-
-## Автор
-
-- [Никита Михно](https://github.com/nikitanp)

@@ -4,7 +4,7 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class Communication extends AbstractEntity
 {
-    protected $modelName = 'communication';
+    protected string $modelName = 'communication';
 
     /**
      * @inheritDoc

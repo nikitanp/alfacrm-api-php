@@ -3,7 +3,8 @@
     "description": "API for AlfaCRM",
     "keywords": [
         "nikitanp",
-        "alfacrm-api-php"
+        "alfacrm-api-php",
+        "alfacrm"
     ],
     "homepage": "https://github.com/nikitanp/alfacrm_api_php",
     "license": "MIT",
@@ -14,19 +15,20 @@
             "role": "Developer"
         }
     ],
+    "suggest": {
+        "guzzlehttp/guzzle": "great http client"
+    },
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
         "ext-json": "*",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.17",
-        "guzzlehttp/guzzle": "^7.3",
-        "http-interop/http-factory-guzzle": "^1.0",
-        "mockery/mockery": "^1.4",
-        "phpunit/phpunit": "^9.5",
-        "vimeo/psalm": "^4.3"
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "phpunit/phpunit": "^9.0",
+        "vimeo/psalm": "^5.0"
     },
     "autoload": {
         "psr-4": {
@@ -41,12 +43,11 @@
     "scripts": {
         "psalm": "vendor/bin/psalm",
         "test": "vendor/bin/phpunit",
-        "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
         "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
     },
     "config": {
         "sort-packages": true
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

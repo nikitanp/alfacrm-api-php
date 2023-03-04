@@ -4,5 +4,5 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class Calendar extends AbstractEntity
 {
-    protected $modelName = 'calendar';
+    protected string $modelName = 'calendar';
 }

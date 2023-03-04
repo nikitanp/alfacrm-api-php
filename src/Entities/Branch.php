@@ -4,5 +4,5 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class Branch extends AbstractEntity
 {
-    protected $modelName = 'branch';
+    protected string $modelName = 'branch';
 }

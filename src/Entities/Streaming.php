@@ -4,5 +4,5 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class Streaming extends AbstractEntity
 {
-    protected $modelName = 'streaming';
+    protected string $modelName = 'streaming';
 }

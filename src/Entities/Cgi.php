@@ -4,7 +4,7 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class Cgi extends AbstractEntity
 {
-    protected $modelName = 'cgi';
+    protected string $modelName = 'cgi';
 
     /**
      * @inheritDoc

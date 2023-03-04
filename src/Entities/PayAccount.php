@@ -4,5 +4,5 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class PayAccount extends AbstractEntity
 {
-    protected $modelName = 'pay-account';
+    protected string $modelName = 'pay-account';
 }

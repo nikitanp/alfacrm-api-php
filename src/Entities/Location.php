@@ -4,5 +4,5 @@ namespace Nikitanp\AlfacrmApiPhp\Entities;
 
 class Location extends AbstractEntity
 {
-    protected $modelName = 'location';
+    protected string $modelName = 'location';
 }

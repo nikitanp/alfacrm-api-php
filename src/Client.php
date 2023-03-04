@@ -13,56 +13,17 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
-/**
- * Class Client
- * @package Nikitanp\AlfacrmApiPhp
- */
 class Client implements ApiClientInterface
 {
-    /**
-     * @var string
-     * @psalm-suppress PropertyNotSetInConstructor
-     */
-    private $token;
+    private string $token = '';
+    private string $domain = '';
+    private string $email = '';
+    private string $apiKey = '';
 
-    /**
-     * @var string
-     * @psalm-suppress PropertyNotSetInConstructor
-     */
-    private $domain;
+    private ClientInterface $httpClient;
+    private RequestFactoryInterface $requestFactory;
+    private StreamFactoryInterface $streamFactory;
 
-    /**
-     * @var string
-     * @psalm-suppress PropertyNotSetInConstructor
-     */
-    private $email;
-
-    /**
-     * @var string
-     * @psalm-suppress PropertyNotSetInConstructor
-     */
-    private $apiKey;
-
-    /**
-     * @var ClientInterface
-     */
-    private $httpClient;
-    /**
-     * @var RequestFactoryInterface
-     */
-    private $requestFactory;
-    /**
-     * @var StreamFactoryInterface
-     */
-    private $streamFactory;
-
-    /**
-     * Client constructor.
-     *
-     * @param ClientInterface $client
-     * @param RequestFactoryInterface $requestFactory
-     * @param StreamFactoryInterface $streamFactory
-     */
     public function __construct(
         ClientInterface $client,
         RequestFactoryInterface $requestFactory,
@@ -75,7 +36,7 @@ class Client implements ApiClientInterface
 
     /**
      * Authorize by email and apiKey
-     * @return void
+     *
      * @throws ApiNotAvailableException
      */
     public function authorize(): void
@@ -85,9 +46,8 @@ class Client implements ApiClientInterface
                 'v2api/auth/login',
                 [
                     'email' => $this->email,
-                    'api_key' => $this->apiKey
-                ],
-                false
+                    'api_key' => $this->apiKey,
+                ]
             );
         } catch (\Throwable $e) {
             throw new ApiNotAvailableException(
@@ -102,21 +62,18 @@ class Client implements ApiClientInterface
 
     /**
      * send post request to the api
-     * @param string $path
-     * @param array $data
-     * @param bool $useToken
-     * @return array
+     *
      * @throws \JsonException
      * @throws ClientExceptionInterface
      */
-    public function sendRequest(string $path, array $data = [], bool $useToken = true): array
+    public function sendRequest(string $path, array $data = []): array
     {
         $request = $this->requestFactory->createRequest(
             'POST',
             $this->makeUrl($path)
         );
 
-        $request = $this->addHeadersToRequest($request, $useToken);
+        $request = $this->addHeadersToRequest($request);
 
         $body = $this->streamFactory->createStream(
             json_encode(
@@ -125,10 +82,7 @@ class Client implements ApiClientInterface
             )
         );
 
-        $request = $request->withBody(
-            $body
-        );
-
+        $request = $request->withBody($body);
         $response = $this->httpClient->sendRequest($request);
 
         if ($response->getStatusCode() === 429) {
@@ -136,7 +90,7 @@ class Client implements ApiClientInterface
         }
 
         if ($response->getStatusCode() === 404) {
-            throw new PathNotFoundException($path . ' not found!', 404);
+            throw new PathNotFoundException($path.' not found!', 404);
         }
 
         if ($response->getStatusCode() !== 200) {
@@ -154,30 +108,19 @@ class Client implements ApiClientInterface
         );
     }
 
-    /**
-     * @param string $path
-     * @return string
-     */
     private function makeUrl(string $path): string
     {
-        return $this->domain . '/' . trim($path, '/');
+        return $this->domain.'/'.trim($path, '/');
     }
 
-    /**
-     * @param RequestInterface $request
-     * @param bool $useToken
-     * @return RequestInterface
-     */
-    private function addHeadersToRequest(
-        RequestInterface $request,
-        bool $useToken = true
-    ): RequestInterface {
+    private function addHeadersToRequest(RequestInterface $request): RequestInterface
+    {
         $headers = [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ];
 
-        if ($useToken) {
+        if ($request->getUri()->getPath() !== '/v2api/auth/login') {
             $headers['X-ALFACRM-TOKEN'] = $this->token;
         }
 
@@ -188,30 +131,18 @@ class Client implements ApiClientInterface
         return $request;
     }
 
-    /**
-     * @param string $domain
-     * @return Client
-     */
     public function setDomain(string $domain): Client
     {
         $this->domain = trim($domain, '/');
         return $this;
     }
 
-    /**
-     * @param string $email
-     * @return Client
-     */
     public function setEmail(string $email): Client
     {
         $this->email = $email;
         return $this;
     }
 
-    /**
-     * @param string $apiKey
-     * @return Client
-     */
     public function setApiKey(string $apiKey): Client
     {
         $this->apiKey = $apiKey;
